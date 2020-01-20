@@ -6,6 +6,8 @@ FROM rust:1.37-alpine as builder
 RUN apk --no-cache add curl ca-certificates \
     && addgroup -S app && adduser -S -g app app
 
+USER app
+
 WORKDIR /home/app
 
 # Copy all the sources
