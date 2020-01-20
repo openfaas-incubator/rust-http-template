@@ -17,9 +17,7 @@ RUN cargo new --lib function && \
 
 # Copy Cargo files
 COPY function/Cargo.toml ./function/Cargo.toml
-COPY --chown=rust:rust function/Cargo.lock ./function/Cargo.lock
 COPY main/Cargo.toml ./main/Cargo.toml
-COPY --chown=rust:rust main/Cargo.lock ./main/Cargo.lock
 
 # Download and build deps
 RUN cd function && cargo build
