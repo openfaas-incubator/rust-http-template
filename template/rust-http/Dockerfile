@@ -8,6 +8,9 @@ WORKDIR /home/rust
 COPY function ./function
 COPY main ./main
 
+RUN export DEBIAN_FRONTEND=noninteractive && apt update \
+    && apt install -y musl-tools
+
 RUN cd main && cargo build --target x86_64-unknown-linux-musl --release
 
 FROM alpine:3.11 as runner
