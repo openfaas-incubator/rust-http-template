@@ -1,6 +1,6 @@
 FROM openfaas/of-watchdog:0.7.2 as watchdog
 
-FROM rust:1.37-alpine as builder
+FROM rust:1.51-alpine as builder
 
 WORKDIR /home/rust
 
