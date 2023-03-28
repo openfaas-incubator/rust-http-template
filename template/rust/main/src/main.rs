@@ -3,8 +3,6 @@ use hyper::rt::Future;
 use hyper::service::service_fn;
 use hyper::{Body, Request, Response, Server, StatusCode};
 
-use handler;
-
 type BoxFuture = Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + Send>;
 type Error = Box<dyn std::error::Error>;
 
@@ -15,7 +13,7 @@ fn finalize(result: Result<Vec<u8>, Error>) -> Response<Body> {
             let body = format!(
                 "{{\"status\": \"{}\", \"description\":\"{}\"}}",
                 StatusCode::INTERNAL_SERVER_ERROR.to_string(),
-                error.description()
+                error.to_string()
             );
             let mut resp = Response::new(Body::from(body));
             *resp.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;
