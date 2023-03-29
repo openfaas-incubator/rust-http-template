@@ -17,7 +17,7 @@ RUN chmod +x /usr/bin/fwatchdog
 
 ARG ADDITIONAL_PKG=""
 # Install packages and add non-root user
-RUN apk --no-cache add curl ca-certificates libgcc gcompat ${ADDITIONAL_PKG} \
+RUN apk --no-cache add curl ca-certificates ${ADDITIONAL_PKG} \
     && addgroup -S app && adduser -S -g app app
 
 # Split instructions so that buildkit can run & cache
@@ -27,8 +27,7 @@ RUN mkdir -p /home/app \
 
 WORKDIR /home/app
 
-COPY --from=build --chown=app:app /home/rust/main/target/release/main .
-RUN chmod +x . && ldd main # test if required links are available
+COPY --from=build --chown=app:app /home/rust/main/target/x86_64-unknown-linux-musl/release/main .
 
 USER app
 
