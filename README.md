@@ -6,11 +6,21 @@ This repository contains two Rust templates for OpenFaaS, one of which gives add
 
 ```sh
 $ faas template pull https://github.com/openfaas-incubator/rust-http-template
+
 $ faas new --list
 Languages available as templates:
 - rust
 - rust-http
 ```
+
+Note: due to the Cargo registry being cached in the Dockerfile for these templates, BuildKit is required to build functions.
+
+```
+DOCKER_BUILDKIT=1 faas-cli build
+DOCKER_BUILDKIT=1 faas-cli up
+```
+
+`faas-cli publish` already uses BuildKit, so no additional flags are required with this command.
 
 ## rust-http-template/rust
 

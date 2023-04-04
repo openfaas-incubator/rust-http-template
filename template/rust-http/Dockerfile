@@ -1,6 +1,6 @@
-FROM openfaas/of-watchdog:0.7.2 as watchdog
+FROM ghcr.io/openfaas/of-watchdog:0.9.11 as watchdog
 
-FROM rust:1.37-alpine as builder
+FROM rust:1.68.2-alpine as builder
 
 WORKDIR /home/rust
 
@@ -8,9 +8,11 @@ WORKDIR /home/rust
 COPY function ./function
 COPY main ./main
 
-RUN cd main && cargo build --target x86_64-unknown-linux-musl --release
+ENV CARGO_TARGET_DIR=/home/rust/target
+WORKDIR /home/rust/main
+RUN --mount=type=cache,target=/usr/local/cargo/registry cargo build --target x86_64-unknown-linux-musl --release
 
-FROM alpine:3.11 as runner
+FROM alpine:3.17.3 as runner
 
 # Install packages and add non-root user
 RUN apk --no-cache add curl ca-certificates \
@@ -20,10 +22,13 @@ ENV USER=app
 
 # Copy of-watchdog binary
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
-RUN chmod +x /usr/bin/fwatchdog
 
-# Set up watchdog for HTTP mode
-ENV fprocess="./main"
+# AE: unable to get the binary to start if moved to /home/app
+COPY --from=builder /home/rust/target/x86_64-unknown-linux-musl/release/main /usr/bin/
+
+WORKDIR /home/app
+
+ENV fprocess="main"
 ENV mode="http"
 ENV upstream_url="http://127.0.0.1:3000"
 
