@@ -1,6 +1,6 @@
 # rust-http-template
 
-An OpenFaaS of-watchdog template written in Rust.
+An unofficial OpenFaaS template for Rust - maintained by community members.
 
 This repository contains two Rust templates for OpenFaaS, one of which gives additional control over the HTTP request and response. They will both handle higher throughput than the classic watchdog due to the process being kept warm.
 
