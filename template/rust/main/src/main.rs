@@ -13,7 +13,7 @@ fn finalize(result: Result<Vec<u8>, Error>) -> Response<Body> {
             let body = format!(
                 "{{\"status\": \"{}\", \"description\":\"{}\"}}",
                 StatusCode::INTERNAL_SERVER_ERROR.to_string(),
-                error.description()
+                error.to_string()
             );
             let mut resp = Response::new(Body::from(body));
             *resp.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;
