@@ -3,8 +3,6 @@ use hyper::rt::Future;
 use hyper::service::service_fn;
 use hyper::{Body, Request, Response, Server, StatusCode};
 
-use handler;
-
 type BoxFuture = Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + Send>;
 type Error = Box<dyn std::error::Error>;
 
